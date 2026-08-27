@@ -4,14 +4,14 @@ import { contactoInput, generarAgenteInput } from "./agentes.tipos";
 import type { AgenteGenerado } from "./agentes.tipos";
 
 export const generarAgente = createServerFn({ method: "POST" })
-  .inputValidator((input: unknown) => generarAgenteInput.parse(input))
+  .validator((input: unknown) => generarAgenteInput.parse(input))
   .handler(async ({ data }): Promise<AgenteGenerado> => {
     const { generarConIA, etiquetaDominio } = await import("./agentes.server");
     const resultado = await generarConIA(data);
 
     try {
       const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-      await supabaseAdmin.from("agentes_generados").insert({
+      await supabaseAdmin.from("generated_agents").insert({
         dominio: etiquetaDominio(data),
         problema: data.problema,
         tipo_problema: data.tipoProblema,
@@ -27,10 +27,10 @@ export const generarAgente = createServerFn({ method: "POST" })
   });
 
 export const enviarContacto = createServerFn({ method: "POST" })
-  .inputValidator((input: unknown) => contactoInput.parse(input))
+  .validator((input: unknown) => contactoInput.parse(input))
   .handler(async ({ data }) => {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { error } = await supabaseAdmin.from("contactos").insert({
+    const { error } = await supabaseAdmin.from("contact_leads").insert({
       nombre: data.nombre,
       email: data.email,
       descripcion: data.descripcion,

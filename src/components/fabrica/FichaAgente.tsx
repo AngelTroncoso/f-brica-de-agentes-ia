@@ -57,8 +57,8 @@ export function FichaAgente({ agente, onReiniciar }: Props) {
       {agente.modo === "demo" && (
         <p className="flex items-start gap-2 rounded-lg border border-primary/30 bg-primary/10 p-3 text-sm text-foreground">
           <TriangleAlert className="mt-0.5 size-4 shrink-0 text-primary" />
-          Estamos mostrando una generación de demostración porque el modelo no está
-          disponible en este momento. La experiencia completa sigue siendo funcional.
+          Estamos mostrando una generación de demostración porque el modelo no está disponible en
+          este momento. La experiencia completa sigue siendo funcional.
         </p>
       )}
 
@@ -71,9 +71,7 @@ export function FichaAgente({ agente, onReiniciar }: Props) {
         <TabsContent value="prompt" className="mt-4 animate-fade">
           <div className="panel overflow-hidden">
             <div className="flex items-center justify-between gap-2 border-b border-border bg-surface-strong/60 px-4 py-2.5">
-              <span className="font-mono text-xs text-muted-foreground">
-                system_prompt.txt
-              </span>
+              <span className="font-mono text-xs text-muted-foreground">system_prompt.txt</span>
               <div className="flex gap-1.5">
                 <Button
                   size="sm"
@@ -90,9 +88,7 @@ export function FichaAgente({ agente, onReiniciar }: Props) {
                 <Button
                   size="sm"
                   variant="ghost"
-                  onClick={() =>
-                    descargarArchivo(`${base}-system-prompt.txt`, agente.systemPrompt)
-                  }
+                  onClick={() => descargarArchivo(`${base}-system-prompt.txt`, agente.systemPrompt)}
                 >
                   <Download className="size-4" />
                   <span className="hidden sm:inline">Descargar</span>
@@ -137,9 +133,15 @@ export function FichaAgente({ agente, onReiniciar }: Props) {
                 <table className="w-full text-left text-sm">
                   <thead className="bg-surface-strong/60 text-xs uppercase text-muted-foreground">
                     <tr>
-                      <th scope="col" className="px-3 py-2 font-medium">Capa</th>
-                      <th scope="col" className="px-3 py-2 font-medium">Elección</th>
-                      <th scope="col" className="px-3 py-2 font-medium">Por qué</th>
+                      <th scope="col" className="px-3 py-2 font-medium">
+                        Capa
+                      </th>
+                      <th scope="col" className="px-3 py-2 font-medium">
+                        Elección
+                      </th>
+                      <th scope="col" className="px-3 py-2 font-medium">
+                        Por qué
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
@@ -198,8 +200,8 @@ export function FichaAgente({ agente, onReiniciar }: Props) {
       </Tabs>
 
       <p className="text-xs text-muted-foreground">
-        Este es un prototipo generado automáticamente. Revisa el prompt, las
-        herramientas y los datos que expondrás antes de llevarlo a producción.
+        Este es un prototipo generado automáticamente. Revisa el prompt, las herramientas y los
+        datos que expondrás antes de llevarlo a producción.
       </p>
     </section>
   );

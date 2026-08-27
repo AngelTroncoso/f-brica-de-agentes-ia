@@ -35,8 +35,7 @@ export function Workbench() {
     },
   });
 
-  const etiquetaDominio =
-    DOMINIOS.find((d) => d.value === dominio)?.label ?? "";
+  const etiquetaDominio = DOMINIOS.find((d) => d.value === dominio)?.label ?? "";
   const problemaSel = PROBLEMAS.find((p) => p.value === tipoProblema);
 
   const validarPaso1 = () => {
@@ -107,13 +106,10 @@ export function Workbench() {
                 onClick={() => setDominio(d.value)}
                 className={cn(
                   "group rounded-xl border border-border bg-surface p-4 text-left transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-                  dominio === d.value &&
-                    "border-primary bg-primary/10 shadow-[var(--shadow-glow)]",
+                  dominio === d.value && "border-primary bg-primary/10 shadow-[var(--shadow-glow)]",
                 )}
               >
-                <span className="block font-display text-base font-semibold">
-                  {d.label}
-                </span>
+                <span className="block font-display text-base font-semibold">{d.label}</span>
                 <span className="mt-1 block font-mono text-[11px] uppercase tracking-wide text-muted-foreground">
                   {d.value}
                 </span>
@@ -168,9 +164,7 @@ export function Workbench() {
                     "border-accent bg-accent/10 shadow-[var(--shadow-glow)]",
                 )}
               >
-                <span className="block font-display text-base font-semibold">
-                  {p.label}
-                </span>
+                <span className="block font-display text-base font-semibold">{p.label}</span>
                 <span className="mt-1 block text-sm text-muted-foreground">{p.hint}</span>
               </button>
             ))}
@@ -187,10 +181,7 @@ export function Workbench() {
               onChange={(ev) => setProblema(ev.target.value)}
               aria-describedby="problema-ayuda"
             />
-            <div
-              id="problema-ayuda"
-              className="flex justify-between text-xs text-muted-foreground"
-            >
+            <div id="problema-ayuda" className="flex justify-between text-xs text-muted-foreground">
               <span>Mínimo 15 caracteres.</span>
               <span className="font-mono">
                 {problema.length}/{MAX_PROBLEMA}
@@ -199,18 +190,14 @@ export function Workbench() {
           </div>
 
           <ErrorTexto
-            mensaje={
-              errores["tipoProblema"] ?? errores["problema"] ?? errores["dominio"]
-            }
+            mensaje={errores["tipoProblema"] ?? errores["problema"] ?? errores["dominio"]}
           />
           {mutacion.isError && (
             <div className="flex items-start gap-2 rounded-lg border border-destructive/40 bg-destructive/10 p-3 text-sm">
               <TriangleAlert className="mt-0.5 size-4 shrink-0 text-destructive" />
               <div>
                 <p className="font-medium">No pudimos generar el agente.</p>
-                <p className="text-muted-foreground">
-                  {mensajeError(mutacion.error)}
-                </p>
+                <p className="text-muted-foreground">{mensajeError(mutacion.error)}</p>
               </div>
             </div>
           )}

@@ -17,8 +17,7 @@ export function ContactoForm() {
   const enviar = useServerFn(enviarContacto);
 
   const mutacion = useMutation({
-    mutationFn: (data: { nombre: string; email: string; descripcion: string }) =>
-      enviar({ data }),
+    mutationFn: (data: { nombre: string; email: string; descripcion: string }) => enviar({ data }),
     onSuccess: () => {
       toast.success("¡Listo! Te contactaremos pronto.");
       setValores({ nombre: "", email: "", descripcion: "" });
@@ -44,8 +43,7 @@ export function ContactoForm() {
         <CheckCircle2 className="size-8 text-success" />
         <h3 className="text-xl font-semibold">Mensaje recibido</h3>
         <p className="text-sm text-muted-foreground">
-          Gracias por escribirnos. Revisaremos tu caso y te respondemos al correo que
-          nos dejaste.
+          Gracias por escribirnos. Revisaremos tu caso y te respondemos al correo que nos dejaste.
         </p>
         <Button variant="outline" onClick={() => mutacion.reset()}>
           Enviar otro mensaje
@@ -86,9 +84,7 @@ export function ContactoForm() {
           value={valores.descripcion}
           placeholder="Qué agente quieres llevar a producción, con qué sistemas debería conversar y qué volumen manejas."
           aria-invalid={Boolean(errores["descripcion"])}
-          onChange={(ev) =>
-            setValores((s) => ({ ...s, descripcion: ev.target.value }))
-          }
+          onChange={(ev) => setValores((s) => ({ ...s, descripcion: ev.target.value }))}
         />
         {errores["descripcion"] && (
           <p role="alert" className="text-sm text-destructive">
@@ -99,8 +95,7 @@ export function ContactoForm() {
 
       {mutacion.isError && (
         <p role="alert" className="flex items-center gap-2 text-sm text-destructive">
-          <TriangleAlert className="size-4" /> No pudimos enviar tu mensaje. Inténtalo
-          nuevamente.
+          <TriangleAlert className="size-4" /> No pudimos enviar tu mensaje. Inténtalo nuevamente.
         </p>
       )}
 

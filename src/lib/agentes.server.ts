@@ -20,9 +20,7 @@ const respuestaSchema = z.object({
 });
 
 export function etiquetaDominio(input: GenerarAgenteInput) {
-  return input.dominio === "otro" && input.dominioLibre
-    ? input.dominioLibre
-    : input.dominio;
+  return input.dominio === "otro" && input.dominioLibre ? input.dominioLibre : input.dominio;
 }
 
 const SISTEMA = `Eres un arquitecto de agentes de IA que trabaja con pymes y equipos técnicos de Chile y Latinoamérica.
@@ -57,15 +55,40 @@ export function generarDemo(input: GenerarAgenteInput): AgenteGenerado {
       "Registrar cada interacción para medir cobertura y calidad.",
     ],
     herramientas: [
-      { nombre: "Base de conocimiento (RAG)", para_que: "Consultar políticas, precios y procedimientos internos." },
-      { nombre: "API interna del negocio", para_que: "Leer estados de pedidos, casos o clientes en tiempo real." },
-      { nombre: "Notificación a humano", para_que: "Derivar por correo o WhatsApp cuando se supera el alcance." },
+      {
+        nombre: "Base de conocimiento (RAG)",
+        para_que: "Consultar políticas, precios y procedimientos internos.",
+      },
+      {
+        nombre: "API interna del negocio",
+        para_que: "Leer estados de pedidos, casos o clientes en tiempo real.",
+      },
+      {
+        nombre: "Notificación a humano",
+        para_que: "Derivar por correo o WhatsApp cuando se supera el alcance.",
+      },
     ],
     stack: [
-      { capa: "API / orquestación", eleccion: "FastAPI (Python)", motivo: "Rápido de desplegar, tipado con Pydantic y fácil de integrar." },
-      { capa: "Modelo", eleccion: "Gemini", motivo: "Buen costo por token y latencia baja para tareas conversacionales." },
-      { capa: "Persistencia", eleccion: "PostgreSQL", motivo: "Historial de conversaciones, trazabilidad y métricas." },
-      { capa: "Observabilidad", eleccion: "Logs estructurados + trazas por request", motivo: "Auditar respuestas y detectar alucinaciones." },
+      {
+        capa: "API / orquestación",
+        eleccion: "FastAPI (Python)",
+        motivo: "Rápido de desplegar, tipado con Pydantic y fácil de integrar.",
+      },
+      {
+        capa: "Modelo",
+        eleccion: "Gemini",
+        motivo: "Buen costo por token y latencia baja para tareas conversacionales.",
+      },
+      {
+        capa: "Persistencia",
+        eleccion: "PostgreSQL",
+        motivo: "Historial de conversaciones, trazabilidad y métricas.",
+      },
+      {
+        capa: "Observabilidad",
+        eleccion: "Logs estructurados + trazas por request",
+        motivo: "Auditar respuestas y detectar alucinaciones.",
+      },
     ],
     metricas: [
       "% de casos resueltos sin intervención humana",
@@ -114,7 +137,7 @@ export async function generarConIA(input: GenerarAgenteInput): Promise<AgenteGen
 
   try {
     const result = await generateText({
-      model: gateway("google/gemini-3.7-flash"),
+      model: gateway(process.env["LOVABLE_AI_MODEL"] ?? "google/gemini-2.5-flash"),
       system: SISTEMA,
       prompt: promptUsuario(input),
       output: Output.object({ schema: respuestaSchema }),
@@ -125,14 +148,19 @@ export async function generarConIA(input: GenerarAgenteInput): Promise<AgenteGen
     if (NoObjectGeneratedError.isInstance(error)) {
       try {
         const parsed = respuestaSchema.parse(
-          JSON.parse(String(error.text ?? "").replace(/^```json|```$/g, "").trim()),
+          JSON.parse(
+            String(error.text ?? "")
+              .replace(/^```json|```$/g, "")
+              .trim(),
+          ),
         );
         return { systemPrompt: parsed.system_prompt, ficha: parsed.ficha, modo: "ia" };
       } catch {
         return generarDemo(input);
       }
     }
-    const status = (error as { statusCode?: number; status?: number })?.statusCode ??
+    const status =
+      (error as { statusCode?: number; status?: number })?.statusCode ??
       (error as { status?: number })?.status;
     if (status === 429) throw new Error("RATE_LIMIT");
     if (status === 402) throw new Error("SIN_CREDITOS");

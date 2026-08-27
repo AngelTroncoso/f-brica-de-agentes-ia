@@ -3,6 +3,7 @@
 Build a production-quality public website called "Fábrica de Agentes" for independent entrepreneurs, small business owners, and technical teams in Chile/Latin America.
 
 Core UX: visitors co-create a micro AI agent in real time.
+
 1. Choose business/project domain: Pyme de servicios, E-commerce, Estudio contable, Freelance, Otro.
 2. Describe the problem the agent should solve: customer support, lead triage, report generation, or custom description.
 3. Call an LLM to generate a system prompt plus a concise technical card containing agent role, suggested tools, and recommended stack. Default recommendation: FastAPI + Gemini.
@@ -13,6 +14,7 @@ Interface must be entirely Spanish, Latin American/Chilean tone. Make the intera
 Add a closing CTA: "Lleva tu agente a producción" with public contact form fields name, email, brief description.
 
 Data requirements:
+
 - No sign-in for visitors.
 - Persist every generated agent: domain, problem description, generated system prompt, technical card.
 - Persist every contact submission: name, email, description.
