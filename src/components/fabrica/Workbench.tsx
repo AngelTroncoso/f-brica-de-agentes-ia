@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { generarAgente } from "@/lib/agentes.functions";
 import { DOMINIOS, PROBLEMAS, generarAgenteInput } from "@/lib/agentes.tipos";
-import type { AgenteGenerado } from "@/lib/agentes.tipos";
+import type { AgenteGenerado, GenerarAgenteInput } from "@/lib/agentes.tipos";
 import { cn } from "@/lib/utils";
 
 const PASOS = ["Dominio", "Problema", "Ficha del agente"];
@@ -28,7 +28,7 @@ export function Workbench() {
 
   const generar = useServerFn(generarAgente);
   const mutacion = useMutation({
-    mutationFn: (data: Parameters<typeof generar>[0]["data"]) => generar({ data }),
+    mutationFn: (data: GenerarAgenteInput) => generar({ data }),
     onSuccess: (resultado) => {
       setAgente(resultado);
       setPaso(2);
@@ -253,7 +253,7 @@ function Encabezado({ titulo, texto }: { titulo: string; texto: string }) {
   );
 }
 
-function ErrorTexto({ mensaje }: { mensaje?: string }) {
+function ErrorTexto({ mensaje }: { mensaje?: string | undefined }) {
   if (!mensaje) return null;
   return (
     <p role="alert" className="text-sm text-destructive">

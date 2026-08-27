@@ -135,7 +135,7 @@ function Campo({
   label: string;
   value: string;
   onChange: (v: string) => void;
-  error?: string;
+  error?: string | undefined;
   type?: string;
   placeholder?: string;
   maxLength?: number;
