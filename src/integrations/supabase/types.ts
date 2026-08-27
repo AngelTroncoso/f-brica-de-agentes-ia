@@ -14,7 +14,63 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      agentes_generados: {
+        Row: {
+          created_at: string
+          dominio: string
+          ficha_tecnica: Json
+          id: string
+          modo: string
+          problema: string
+          system_prompt: string
+          tipo_problema: string | null
+        }
+        Insert: {
+          created_at?: string
+          dominio: string
+          ficha_tecnica?: Json
+          id?: string
+          modo?: string
+          problema: string
+          system_prompt: string
+          tipo_problema?: string | null
+        }
+        Update: {
+          created_at?: string
+          dominio?: string
+          ficha_tecnica?: Json
+          id?: string
+          modo?: string
+          problema?: string
+          system_prompt?: string
+          tipo_problema?: string | null
+        }
+        Relationships: []
+      }
+      contactos: {
+        Row: {
+          created_at: string
+          descripcion: string
+          email: string
+          id: string
+          nombre: string
+        }
+        Insert: {
+          created_at?: string
+          descripcion: string
+          email: string
+          id?: string
+          nombre: string
+        }
+        Update: {
+          created_at?: string
+          descripcion?: string
+          email?: string
+          id?: string
+          nombre?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
