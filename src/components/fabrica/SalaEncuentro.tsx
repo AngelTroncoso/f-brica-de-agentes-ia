@@ -9,6 +9,7 @@ import { copiarAlPortapapeles, descargarArchivo } from "@/lib/descargas";
 import type { CollabSession, CollabTurno, RolTurno } from "@/lib/collab.tipos";
 import { MAX_RONDAS } from "@/lib/collab.tipos";
 import { cn } from "@/lib/utils";
+import { useWebMCP } from "@/hooks/useWebMCP";
 
 const RETRANSMISION_RETRASO = 1200;
 
@@ -34,6 +35,7 @@ export function SalaEncuentro() {
   const [isRunning, setIsRunning] = useState(false);
   const canalRef = useRef<ReturnType<typeof supabase.channel> | null>(null);
 
+  useWebMCP();
   // ── Cleanup Realtime on unmount
   useEffect(() => {
     return () => {
