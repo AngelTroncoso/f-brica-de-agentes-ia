@@ -10,33 +10,43 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as SalaDeEncuentroRouteImport } from './routes/sala-de-encuentro'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SalaDeEncuentroRoute = SalaDeEncuentroRouteImport.update({
+  id: '/sala-de-encuentro',
+  path: '/sala-de-encuentro',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/sala-de-encuentro': typeof SalaDeEncuentroRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/sala-de-encuentro': typeof SalaDeEncuentroRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/sala-de-encuentro': typeof SalaDeEncuentroRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/sala-de-encuentro'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/sala-de-encuentro'
+  id: '__root__' | '/' | '/sala-de-encuentro'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  SalaDeEncuentroRoute: typeof SalaDeEncuentroRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +58,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/sala-de-encuentro': {
+      id: '/sala-de-encuentro'
+      path: '/sala-de-encuentro'
+      fullPath: '/sala-de-encuentro'
+      preLoaderRoute: typeof SalaDeEncuentroRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  SalaDeEncuentroRoute: SalaDeEncuentroRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

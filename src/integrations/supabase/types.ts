@@ -65,6 +65,64 @@ export type Database = {
         };
         Relationships: [];
       };
+      collab_sessions: {
+        Row: {
+          id: string;
+          reto: string;
+          estado: string;
+          ronda_actual: number;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          reto: string;
+          estado?: string;
+          ronda_actual?: number;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          reto?: string;
+          estado?: string;
+          ronda_actual?: number;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
+      collab_turns: {
+        Row: {
+          id: string;
+          session_id: string;
+          ronda: number;
+          rol: string;
+          contenido: string;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          session_id: string;
+          ronda: number;
+          rol: string;
+          contenido: string;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          session_id?: string;
+          ronda?: number;
+          rol?: string;
+          contenido?: string;
+          created_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "collab_turns_session_id_fkey";
+            columns: ["session_id"];
+            referencedWith: "collab_sessions";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
     };
     Views: {
       [_ in never]: never;
