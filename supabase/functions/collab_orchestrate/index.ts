@@ -153,8 +153,9 @@ async function ejecutarTurno(
     .order("ronda", { ascending: true });
 
   const historial = (turnos ?? [])
-    .map((t: { ronda: number; rol: string; contenido: string }) =>
-      `[Ronda ${t.ronda} — ${t.rol}] ${t.contenido}`,
+    .map(
+      (t: { ronda: number; rol: string; contenido: string }) =>
+        `[Ronda ${t.ronda} — ${t.rol}] ${t.contenido}`,
     )
     .join("\n\n");
 
@@ -211,16 +212,10 @@ async function ejecutarTurno(
 
   // 7. Actualizar estado de la sesión
   if (aprobado) {
-    await supabase
-      .from("collab_sessions")
-      .update({ estado: "convergida" })
-      .eq("id", session_id);
+    await supabase.from("collab_sessions").update({ estado: "convergida" }).eq("id", session_id);
     sesion.estado = "convergida";
   } else if (ronda >= MAX_RONDAS) {
-    await supabase
-      .from("collab_sessions")
-      .update({ estado: "fallida" })
-      .eq("id", session_id);
+    await supabase.from("collab_sessions").update({ estado: "fallida" }).eq("id", session_id);
     sesion.estado = "fallida";
   } else {
     // Avanzar a la siguiente ronda
@@ -250,18 +245,16 @@ Deno.serve(async (req: Request) => {
     const { session_id } = await req.json();
 
     if (!session_id) {
-      return new Response(
-        JSON.stringify({ error: "session_id es requerido" }),
-        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } },
-      );
+      return new Response(JSON.stringify({ error: "session_id es requerido" }), {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
     }
 
     // Cliente de Supabase — service role si está disponible, sino anon (RLS público)
     const supabaseUrl = Deno.env.get("SUPABASE_URL") ?? "";
     const supabaseKey =
-      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ??
-      Deno.env.get("SUPABASE_ANON_KEY") ??
-      "";
+      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? Deno.env.get("SUPABASE_ANON_KEY") ?? "";
 
     if (!supabaseUrl || !supabaseKey) {
       throw new Error("Variables de entorno de Supabase no configuradas");
@@ -277,9 +270,9 @@ Deno.serve(async (req: Request) => {
   } catch (error: unknown) {
     const msg = error instanceof Error ? error.message : "Error interno";
     console.error("collab_orchestrate:", error);
-    return new Response(
-      JSON.stringify({ error: msg }),
-      { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } },
-    );
+    return new Response(JSON.stringify({ error: msg }), {
+      status: 500,
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
   }
 });
