@@ -13,6 +13,8 @@ import { generarAgente } from "@/lib/agentes.functions";
 import { DOMINIOS, PROBLEMAS, generarAgenteInput } from "@/lib/agentes.tipos";
 import type { AgenteGenerado, GenerarAgenteInput } from "@/lib/agentes.tipos";
 import { cn } from "@/lib/utils";
+import { useWebMCP } from "@/hooks/useWebMCP";
+import { useFabricaWebMCP } from "@/hooks/useFabricaWebMCP";
 
 const PASOS = ["Dominio", "Problema", "Ficha del agente"];
 const MAX_PROBLEMA = 2000;
@@ -25,6 +27,10 @@ export function Workbench() {
   const [problema, setProblema] = useState("");
   const [errores, setErrores] = useState<Record<string, string>>({});
   const [agente, setAgente] = useState<AgenteGenerado | null>(null);
+
+  // Registrar herramientas WebMCP para Sala de Encuentro y Fabrica de Agentes
+  useWebMCP();
+  useFabricaWebMCP();
 
   const generar = useServerFn(generarAgente);
   const mutacion = useMutation({
