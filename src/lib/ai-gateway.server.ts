@@ -1,9 +1,5 @@
-import { createOpenAICompatible } from "@ai-sdk/openai-compatible";
+import { google } from "@ai-sdk/google";
 
-export function createLovableAiGatewayProvider(apiKey: string) {
-  return createOpenAICompatible({
-    name: "lovable",
-    baseURL: "https://ai.gateway.lovable.dev/v1",
-    headers: { "Lovable-API-Key": apiKey },
-  });
+export function createGoogleAiGatewayProvider(apiKey: string, model?: string) {
+  return google(model ?? "gemini-2.5-flash", { apiKey });
 }

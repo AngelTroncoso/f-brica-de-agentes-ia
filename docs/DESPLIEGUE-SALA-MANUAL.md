@@ -87,7 +87,8 @@ proyecto (`SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `SUPABASE_ANON_KEY`).
 Para IA real (no demo), además:
 
 ```bash
-supabase secrets set LOVABLE_API_KEY=<tu-key> --env-name
+supabase secrets set GOOGLE_AI_STUDIO_KEY=<tu-key> --env-name
+supabase secrets set GOOGLE_AI_MODEL=gemini-2.5-flash --env-name
 ```
 
 ### Opción B — GitHub integration

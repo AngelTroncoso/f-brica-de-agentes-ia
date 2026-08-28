@@ -1,18 +1,18 @@
-﻿/**
+/**
  * Sala de Encuentro — Edge Function de orquestación.
  *
  * Ejecuta UN turno por invocación:
  *  1. Lee collab_sessions por session_id
  *  2. Determina el rol según la ronda actual
- *  3. Llama al LLM (LOVABLE_API_KEY) con system prompt distinto por rol
+ *  3. Llama al LLM (GOOGLE_AI_STUDIO_KEY) con system prompt distinto por rol
  *  4. Guarda el turno en collab_turns
  *  5. Marca la sesión como convergida / fallida / avanza de ronda
  *
- * Fallback a "Modo demo" cuando no hay LOVABLE_API_KEY,
+ * Fallback a "Modo demo" cuando no hay GOOGLE_AI_STUDIO_KEY,
  * replicando el comportamiento de agentes.server.ts.
  */
 import { generateText } from "ai";
-import { createOpenAICompatible } from "@ai-sdk/openai-compatible";
+import { google } from "@ai-sdk/google";
 import { createClient } from "@supabase/supabase-js";
 
 const corsHeaders = {
@@ -60,7 +60,7 @@ Formato:
 - Responde SIEMPRE en español neutro con giros chilenos suaves.`,
 };
 
-// ── Modo demo (cuando no hay LOVABLE_API_KEY) ─────────────────────────────
+// ── Modo demo (cuando no hay GOOGLE_AI_STUDIO_KEY) ──────────────────────
 interface DemoTurno {
   contenido: string;
 }
@@ -163,21 +163,16 @@ async function ejecutarTurno(
   let contenido: string;
   let modo: "ia" | "demo" = "demo";
 
-  const apiKey = Deno.env.get("LOVABLE_API_KEY");
+  const apiKey = Deno.env.get("GOOGLE_AI_STUDIO_KEY");
   if (!apiKey) {
     contenido = generateDemo(rol, sesion.reto).contenido;
   } else {
-    const gateway = createOpenAICompatible({
-      name: "lovable",
-      baseURL: "https://ai.gateway.lovable.dev/v1",
-      headers: { "Lovable-API-Key": apiKey },
-    });
-
-    const modelo = Deno.env.get("LOVABLE_AI_MODEL") ?? "google/gemini-2.5-flash";
+    const modelo = Deno.env.get("GOOGLE_AI_MODEL") ?? "gemini-2.5-flash";
 
     try {
+      const googleModel = google(modelo, { apiKey });
       const result = await generateText({
-        model: gateway(modelo),
+        model: googleModel,
         system: PROMPTS_SISTEMA[rol],
         prompt: promptUsuario(rol, sesion.reto, historial),
       });

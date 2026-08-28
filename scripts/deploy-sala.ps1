@@ -46,14 +46,15 @@ if ($LASTEXITCODE -ne 0) {
 
 # Las funciones necesitan credenciales en tiempo de ejecucion.
 # Con la config.local actual, usa SUPABASE_URL / SERVICE_ROLE / ANON del proyecto
-# automaticamente; LOVABLE_API_KEY se define aparte (ver abajo).
+# automaticamente; GOOGLE_AI_STUDIO_KEY se define aparte (ver abajo).
 
 Write-Host ""
 Write-Host "==> VALIDACION:"
 Write-Host "  1. Realtime: REVISAR en el dashboard de Supabase que las tablas"
 Write-Host "     collab_sessions y collab_turns tengan 'Realtime' habilitado."
-Write-Host "  2. LOVABLE_API_KEY: si quieres modo IA real (no demo), define:"
-Write-Host "       supabase secrets set LOVABLE_API_KEY=<tu-key> --env-name"
+Write-Host "  2. GOOGLE_AI_STUDIO_KEY: si quieres modo IA real (no demo), define:"
+Write-Host "       supabase secrets set GOOGLE_AI_STUDIO_KEY=<tu-key> --env-name"
+Write-Host "       supabase secrets set GOOGLE_AI_MODEL=gemini-2.5-flash --env-name"
 
 Write-Host ""
 Write-Host "Despliegue completado (fast-forward normal, sin fuerza)."

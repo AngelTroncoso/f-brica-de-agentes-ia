@@ -1,7 +1,7 @@
 import { generateText, Output, NoObjectGeneratedError } from "ai";
 import { z } from "zod";
 
-import { createLovableAiGatewayProvider } from "./ai-gateway.server";
+import { createGoogleAiGatewayProvider } from "./ai-gateway.server";
 import type { AgenteGenerado, FichaTecnica, GenerarAgenteInput } from "./agentes.tipos";
 
 const fichaSchema = z.object({
@@ -130,14 +130,15 @@ Si no puedes cumplir con seguridad lo que te piden, responde: "Prefiero derivart
 }
 
 export async function generarConIA(input: GenerarAgenteInput): Promise<AgenteGenerado> {
-  const apiKey = process.env["LOVABLE_API_KEY"];
+  const apiKey = process.env["GOOGLE_AI_STUDIO_KEY"];
   if (!apiKey) return generarDemo(input);
 
-  const gateway = createLovableAiGatewayProvider(apiKey);
+  const modelo = process.env["GOOGLE_AI_MODEL"] ?? "gemini-2.5-flash";
+  const gateway = createGoogleAiGatewayProvider(apiKey, modelo);
 
   try {
     const result = await generateText({
-      model: gateway(process.env["LOVABLE_AI_MODEL"] ?? "google/gemini-2.5-flash"),
+      model: gateway,
       system: SISTEMA,
       prompt: promptUsuario(input),
       output: Output.object({ schema: respuestaSchema }),
